@@ -13,7 +13,7 @@ export type UserInfo = {
     bio?: string;
     company?: string;
     createdAt: Date;
-    name: string;
+    name?: string;
     starredRepositories: StarredRepositories;
 };
 

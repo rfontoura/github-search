@@ -2,6 +2,7 @@ import { ApolloServer, gql } from 'apollo-server';
 import { UserSearchResult } from './types';
 import { createGitHubApolloClient } from './gitHubClient';
 import { searchUsers } from './services/github';
+import { dateScalar } from './Scalars';
 
 require('dotenv').config();
 
@@ -23,7 +24,7 @@ const typeDefs = gql`
         bio: String
         company: String
         createdAt: Date!
-        name: String!
+        name: String
         starredRepositories: StarredRepositories!
     }
 
@@ -42,6 +43,7 @@ const typeDefs = gql`
 const apolloClient = createGitHubApolloClient();
 
 const resolvers = {
+    Date: dateScalar,
     Query: {
         async searchUsers(parent: any, { query }: { query: string }): Promise<UserSearchResult> {
             return searchUsers(apolloClient, query);

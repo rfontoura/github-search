@@ -1,38 +1,88 @@
-import React, { FunctionComponent } from 'react';
-import styled from '@emotion/styled';
-import { useQuery } from '@apollo/client';
-import { SEARCH_USERS, SearchResult } from '../graphql/query';
+import React, { FunctionComponent, useCallback, useState } from 'react';
+import { useLazyQuery } from '@apollo/client';
+import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import TextField from '@material-ui/core/TextField';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
 
-const Container = styled.div`
-    display: flex;
-    padding: 50px;
-`;
+import { SEARCH_USERS } from '../graphql/query';
+import PageHeader from './PageHeader';
+import UsersList from './UsersList';
 
 const Layout: FunctionComponent<unknown> = () => {
-    const { loading, error, data = { userCount: 0 } } = useQuery<SearchResult>(SEARCH_USERS, {
+    const useStyles = makeStyles((theme) => ({
+        container: {
+            marginTop: theme.spacing(8),
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+        },
+        searchRow: {
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            width: '100%',
+            marginTop: theme.spacing(1),
+        },
+        searchField: {
+            marginBottom: theme.spacing(1),
+        },
+        submit: {
+            height: theme.spacing(4),
+            width: theme.spacing(16),
+        },
+    }));
+    const classes = useStyles();
+
+    const [query, setQuery] = useState('');
+    const [runSearch, { loading, error, data }] = useLazyQuery(SEARCH_USERS, {
         variables: {
-            query: 'rafael',
+            query,
         },
     });
 
-    if (error) {
-        console.log('error', error);
-        return (
-            <div>
-                <div>
-                    <h1>ERROR OCURRED</h1>
-                </div>
-            </div>
-        );
-    }
-
-    if (loading) {
-        return <div>Loading...</div>;
-    }
+    const onPressEnter = useCallback(
+        (e: React.KeyboardEvent<HTMLInputElement>) => {
+            if (e.keyCode === 13) {
+                runSearch();
+            }
+        },
+        [runSearch],
+    );
 
     return (
-        <Container>
-            <p>aa</p>
+        <Container component="main" maxWidth="sm">
+            <CssBaseline />
+            <div className={classes.container}>
+                <PageHeader />
+                <div className={classes.searchRow}>
+                    <TextField
+                        type="search"
+                        variant="outlined"
+                        id="query"
+                        label="Search users at GitHub"
+                        helperText="e.g.: stars: > 30"
+                        name="query"
+                        size="medium"
+                        autoFocus
+                        fullWidth
+                        className={classes.searchField}
+                        onKeyDown={onPressEnter}
+                    />
+                    <Button
+                        type="submit"
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                        onClick={() => runSearch()}
+                    >
+                        Search
+                    </Button>
+                </div>
+                {error && <div>ERROR: `${error}`</div>}
+                {!error && data && <UsersList searchResult={data.searchUsers} isLoading={loading} />}
+            </div>
         </Container>
     );
 };

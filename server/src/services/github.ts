@@ -16,7 +16,7 @@ type UserNode = {
     bio?: string;
     company?: string;
     createdAt: Date;
-    name: string;
+    name?: string;
     starredRepositories: StarredRepositories;
 };
 
@@ -55,7 +55,7 @@ export const SEARCH_USERS_GQL = gql`
 
 
 export const searchUsers = async (client: ApolloClient<NormalizedCacheObject>, query: String): Promise<SearchResult> => {
-    const result = await client.query<{ search: SearchResult }>({
+    const queryResult = await client.query<{ search: SearchResult }>({
         query: SEARCH_USERS_GQL,
         variables: {
             query,
@@ -64,5 +64,5 @@ export const searchUsers = async (client: ApolloClient<NormalizedCacheObject>, q
         },
     });
 
-    return result?.data?.search;
+    return queryResult?.data?.search;
 };
