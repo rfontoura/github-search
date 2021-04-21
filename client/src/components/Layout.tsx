@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import styled from '@emotion/styled';
 import { useQuery } from '@apollo/client';
-import { SEARCH, SearchResult } from '../graphql/query';
+import { SEARCH_USERS, SearchResult } from '../graphql/query';
 
 const Container = styled.div`
     display: flex;
@@ -9,15 +9,21 @@ const Container = styled.div`
 `;
 
 const Layout: FunctionComponent<unknown> = () => {
-    const { loading, error, data = { userCount: 0 } } = useQuery<SearchResult>(SEARCH, {
+    const { loading, error, data = { userCount: 0 } } = useQuery<SearchResult>(SEARCH_USERS, {
         variables: {
-            search: 'rafael',
+            query: 'rafael',
         },
     });
 
     if (error) {
         console.log('error', error);
-        return <div>ERROR OCURRED</div>;
+        return (
+            <div>
+                <div>
+                    <h1>ERROR OCURRED</h1>
+                </div>
+            </div>
+        );
     }
 
     if (loading) {

@@ -27,7 +27,7 @@ export type SearchResult = {
 };
 
 export type SearchType = { search: SearchResult };
-export const SEARCH = gql`
+export const SEARCH_USERS = gql`
     query search($query: String!) {
         searchUsers(query: $query) {
             pageInfo {
