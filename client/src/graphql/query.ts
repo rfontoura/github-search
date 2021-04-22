@@ -3,7 +3,7 @@ import { gql } from '@apollo/client/core';
 type PageInfo = {
     hasNextPage: boolean;
     hasPreviousPage: boolean;
-    startCursor: string;
+    startCursor?: string;
 };
 
 type StarredRepository = {
@@ -14,7 +14,7 @@ type SearchResultNode = {
     avatarUrl: string;
     bio: string;
     company: string;
-    createdAt: Date;
+    createdAt: string;
     name: string;
     starredRepositories: StarredRepository[];
 };

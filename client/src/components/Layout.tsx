@@ -1,7 +1,6 @@
 import React, { FunctionComponent, useCallback, useState } from 'react';
 import { useLazyQuery } from '@apollo/client';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
@@ -36,11 +35,17 @@ const Layout: FunctionComponent<unknown> = () => {
     const classes = useStyles();
 
     const [query, setQuery] = useState('');
-    const [runSearch, { loading, error, data }] = useLazyQuery(SEARCH_USERS, {
+    const [runQuery, { loading, error, data }] = useLazyQuery(SEARCH_USERS, {
         variables: {
             query,
         },
     });
+
+    const runSearch = useCallback(() => {
+        runQuery({
+            variables: { query },
+        });
+    }, [query, runQuery]);
 
     const onPressEnter = useCallback(
         (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -53,7 +58,6 @@ const Layout: FunctionComponent<unknown> = () => {
 
     return (
         <Container component="main" maxWidth="sm">
-            <CssBaseline />
             <div className={classes.container}>
                 <PageHeader />
                 <div className={classes.searchRow}>
@@ -69,19 +73,20 @@ const Layout: FunctionComponent<unknown> = () => {
                         fullWidth
                         className={classes.searchField}
                         onKeyDown={onPressEnter}
+                        onChange={(e) => setQuery(e.target.value)}
                     />
                     <Button
                         type="submit"
                         variant="contained"
                         color="primary"
                         className={classes.submit}
-                        onClick={() => runSearch()}
+                        onClick={runSearch}
                     >
                         Search
                     </Button>
                 </div>
                 {error && <div>ERROR: `${error}`</div>}
-                {!error && data && <UsersList searchResult={data.searchUsers} isLoading={loading} />}
+                {!error && <UsersList searchResult={data?.searchUsers} isLoading={loading} />}
             </div>
         </Container>
     );

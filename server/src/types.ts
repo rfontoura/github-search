@@ -1,7 +1,7 @@
 export type PageInfo = {
     hasNextPage: boolean;
     hasPreviousPage: boolean;
-    startCursor: string;
+    startCursor?: string;
 };
 
 export type StarredRepositories = {
@@ -20,6 +20,5 @@ export type UserInfo = {
 export type UserSearchResult = {
     pageInfo: PageInfo;
     userCount: number;
-    wikiCount: number;
     nodes: UserInfo[];
 };

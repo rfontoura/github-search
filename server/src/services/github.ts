@@ -15,7 +15,7 @@ type UserNode = {
     avatarUrl?: string;
     bio?: string;
     company?: string;
-    createdAt: Date;
+    createdAt: string;
     name?: string;
     starredRepositories: StarredRepositories;
 };

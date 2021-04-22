@@ -3,11 +3,11 @@ import { CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import { SearchResult } from '../graphql/query';
 
-const formatDate = (date: Date) => {
-    console.log('date', date);
-    if (!date) {
+const formatDate = (dateString: string) => {
+    if (!dateString) {
         return 'who knows?';
     }
+    const date = new Date(dateString);
     const month = date.toLocaleString('default', { month: 'short' });
     return `${date.getDate()}/${month}/${date.getFullYear()}`;
 };
@@ -16,10 +16,11 @@ const useStyles = makeStyles((theme) => ({
     container: {
         display: 'flex',
         flexDirection: 'column',
+        marginTop: theme.spacing(8),
     },
     loading: {
-        width: '100%',
-        height: '100%',
+        width: '200px',
+        height: '200px',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -45,6 +46,14 @@ const UsersList: FunctionComponent<UsersListType> = ({ searchResult, isLoading =
                 <CircularProgress size={40} />
             </div>
         );
+    }
+
+    if (!searchResult) {
+        return null;
+    }
+
+    if (!searchResult.userCount) {
+        return <div>Users not found</div>;
     }
 
     return (
