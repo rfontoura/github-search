@@ -3,30 +3,29 @@ import { gql } from 'apollo-server';
 export default gql`
     scalar Date
 
-    type PageInfo {
-        hasNextPage: Boolean!
-        hasPreviousPage: Boolean!
-        startCursor: String
-    }
-    
-    type StarredRepositories {
-        totalCount: Int!
-    }
-    
-    type UserInfo {
+    type User {
+        id: String!
+        name: String
+        login: String!
+        createdAt: String!
+        email: String
+        url: String
         avatarUrl: String
         bio: String
         company: String
-        createdAt: Date!
-        name: String
-        starredRepositories: StarredRepositories!
+        isGitHubStar: Boolean
+        followers: Int!
+        following: Int!
+        repositories: Int!
+        starredRepositories: Int!
     }
 
     type UserSearchResult {
-        pageInfo: PageInfo!
+        hasNextPage: Boolean!
+        hasPreviousPage: Boolean!
+        startCursor: String
         userCount: Int!
-        wikiCount: Int!
-        nodes: [UserInfo]!
+        users: [User]!
     }
     
     type Query {

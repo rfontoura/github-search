@@ -1,7 +1,9 @@
 import React, { FunctionComponent } from 'react';
 import { CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { SearchResult } from '../graphql/query';
+import StarRateRoundedIcon from '@material-ui/icons/StarRateRounded';
+import { UserSearchResult } from '../graphql/query';
+import { User } from '../../../server/src/types';
 
 const formatDate = (dateString: string) => {
     if (!dateString) {
@@ -32,9 +34,17 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
+const GitHubStar = ({ user }: { user: User }) => {
+    // see https://stars.github.com/
+    if (!user.isGitHubStar) {
+        return null;
+    }
+    return <StarRateRoundedIcon style={{ paddingRight: '0.2em' }} color="primary" fontSize="small" />;
+};
+
 type UsersListType = {
     isLoading?: boolean;
-    searchResult: SearchResult;
+    searchResult: UserSearchResult;
 };
 
 const UsersList: FunctionComponent<UsersListType> = ({ searchResult, isLoading = false }: UsersListType) => {
@@ -58,14 +68,16 @@ const UsersList: FunctionComponent<UsersListType> = ({ searchResult, isLoading =
 
     return (
         <div>
-            {searchResult.nodes.map((userNode) => (
-                <div key={userNode.avatarUrl}>
+            {searchResult.users.map((user) => (
+                <div key={user.id}>
                     <div>
-                        <img src={userNode.avatarUrl} alt={userNode.name} className={styles.avatar} />
+                        <img src={user.avatarUrl} alt={user.name} className={styles.avatar} />
                     </div>
-                    <div style={{ fontWeight: 'bold' }}>
-                        [isGitHubStar *]{userNode.name}, created at {formatDate(userNode.createdAt)}
+                    <div>
+                        <GitHubStar user={user} />
+                        <span>{user.name}</span>
                     </div>
+                    <div>Created at {formatDate(user.createdAt)}</div>
                     <div>Company</div>
                     <div>[people icon] followers * following * [star icon] starred repositories</div>
                     <div>Repositories: [repo number]</div>

@@ -13,16 +13,7 @@ const resolvers = {
     Date: dateScalar,
     Query: {
         async searchUsers(parent: any, { query }: { query: string }): Promise<UserSearchResult> {
-            const result = await searchUsers(apolloClient, query);
-            return {
-                ...result,
-                nodes: result.nodes.map((userInfo) => {
-                    return {
-                        ...userInfo,
-                        createdAt: new Date(userInfo.createdAt),
-                    };
-                })
-            }
+            return searchUsers(apolloClient, query);
         },
     },
 };

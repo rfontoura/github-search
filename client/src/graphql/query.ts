@@ -1,51 +1,53 @@
 import { gql } from '@apollo/client/core';
 
-type PageInfo = {
+type User = {
+    id: string;
+    name?: string;
+    login: string;
+    createdAt: string;
+    email?: string;
+    url?: string;
+    avatarUrl?: string;
+    bio?: string;
+    company?: string;
+    isGitHubStar: boolean;
+    followers: number;
+    following: number;
+    repositories: number;
+    starredRepositories: number;
+};
+
+export type UserSearchResult = {
     hasNextPage: boolean;
     hasPreviousPage: boolean;
     startCursor?: string;
-};
-
-type StarredRepository = {
-    totalCount: number;
-};
-
-type SearchResultNode = {
-    avatarUrl: string;
-    bio: string;
-    company: string;
-    createdAt: string;
-    name: string;
-    starredRepositories: StarredRepository[];
-};
-
-export type SearchResult = {
-    pageInfo: PageInfo;
     userCount: number;
-    wikiCount: number;
-    nodes: SearchResultNode[];
+    users: User[];
 };
 
-export type SearchType = { search: SearchResult };
+export type SearchType = { search: UserSearchResult };
 export const SEARCH_USERS = gql`
     query search($query: String!) {
         searchUsers(query: $query) {
-            pageInfo {
-                hasNextPage
-                hasPreviousPage
-                startCursor
-            }
+            hasNextPage
+            hasPreviousPage
+            startCursor
             userCount
-            wikiCount
-            nodes {
+            users {
+                id
+                login
+                name
+                createdAt
+                email
+                url
                 avatarUrl
                 bio
                 company
-                createdAt
-                name
-                starredRepositories {
-                    totalCount
-                }
+                isGitHubStar
+                followers
+                following
+                repositories
+                starredRepositories
             }
         }
     }

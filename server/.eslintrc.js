@@ -1,31 +1,28 @@
-const path = require('path');
-
 module.exports = {
     root: true,
     env: {
         node: true,
         jest: true,
     },
-    parser: '@typescript-eslint/parser',
-    parserOptions: {
-        project: path.resolve(__dirname, './tsconfig.build.json'),
-        sourceType: 'module',
+    "parser": "@typescript-eslint/parser",
+    "parserOptions": {
+        "ecmaVersion": 2020,
+        "sourceType": "module",
+        "project": "./tsconfig.json",
     },
     ignorePatterns: [
         '**/dist/**',
         '**/node_modules/**',
         '.eslintrc.js',
     ],
-    plugins: ['@typescript-eslint/eslint-plugin', 'eslint-plugin-import', 'import', 'prettier'],
+    "plugins": ["@typescript-eslint", "prettier"],
     extends: [
-        'airbnb-typescript/base',
-        'plugin:@typescript-eslint/eslint-recommended',
-        'plugin:@typescript-eslint/recommended',
-        'plugin:import/errors',
-        'plugin:import/warnings',
-        'plugin:import/typescript',
-        'prettier',
-        'prettier/@typescript-eslint',
+        "airbnb-typescript",
+        "plugin:@typescript-eslint/recommended",
+        "plugin:import/errors",
+        "plugin:import/warnings",
+        "plugin:import/typescript",
+        "prettier"
     ],
     rules: {
         '@typescript-eslint/interface-name-prefix': 'off',

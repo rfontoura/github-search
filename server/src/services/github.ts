@@ -1,5 +1,6 @@
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import gql from 'graphql-tag';
+import { UserSearchResult } from '../types';
 
 type PageInfo = {
     hasNextPage: boolean;
@@ -7,23 +8,30 @@ type PageInfo = {
     startCursor: string;
 };
 
-type StarredRepositories = {
+type CountableEntity = {
     totalCount: number;
-};
+}
 
 type UserNode = {
+    id: string;
+    login: string;
+    url: string;
+    createdAt: string;
+    name?: string;
+    email?: string;
     avatarUrl?: string;
     bio?: string;
     company?: string;
-    createdAt: string;
-    name?: string;
-    starredRepositories: StarredRepositories;
+    isGitHubStar: boolean;
+    followers: CountableEntity;
+    following: CountableEntity;
+    repositories: CountableEntity;
+    starredRepositories: CountableEntity;
 };
 
 type SearchResult = {
     pageInfo: PageInfo;
     userCount: number;
-    wikiCount: number;
     nodes: UserNode[];
 };
 
@@ -36,16 +44,29 @@ export const SEARCH_USERS_GQL = gql`
                 startCursor
             }
             userCount
-            wikiCount
             nodes {
                 ... on User {
+                    id
+                    login
+                    url
                     avatarUrl
                     bio
                     company
                     createdAt
                     name
+                    email
+                    isGitHubStar
+                    followers {
+                      totalCount
+                    }
+                    following {
+                      totalCount
+                    }
+                    repositories {
+                      totalCount
+                    }
                     starredRepositories {
-                        totalCount
+                      totalCount
                     }
                 }
             }
@@ -54,7 +75,7 @@ export const SEARCH_USERS_GQL = gql`
 `;
 
 
-export const searchUsers = async (client: ApolloClient<NormalizedCacheObject>, query: String): Promise<SearchResult> => {
+export const searchUsers = async (client: ApolloClient<NormalizedCacheObject>, query: String): Promise<UserSearchResult> => {
     const queryResult = await client.query<{ search: SearchResult }>({
         query: SEARCH_USERS_GQL,
         variables: {
@@ -64,5 +85,42 @@ export const searchUsers = async (client: ApolloClient<NormalizedCacheObject>, q
         },
     });
 
-    return queryResult?.data?.search;
+    const data = queryResult.data.search;
+    return {
+        ...data.pageInfo,
+        userCount: data.userCount,
+        users: data.nodes.map((userInfo) => {
+            const {
+                id, login, url, avatarUrl, bio, company, createdAt, name, email, isGitHubStar,
+                followers: {
+                    totalCount: followers,
+                },
+                following: {
+                    totalCount: following,
+                },
+                repositories: {
+                    totalCount: repositories,
+                },
+                starredRepositories: {
+                    totalCount: starredRepositories,
+                },
+            } = userInfo;
+            return {
+                id,
+                login,
+                url,
+                avatarUrl,
+                bio,
+                company,
+                createdAt,
+                name,
+                email,
+                isGitHubStar,
+                followers,
+                following,
+                repositories,
+                starredRepositories,
+            };
+        }),
+    }
 };

@@ -1,24 +1,24 @@
-export type PageInfo = {
-    hasNextPage: boolean;
-    hasPreviousPage: boolean;
-    startCursor?: string;
-};
-
-export type StarredRepositories = {
-    totalCount: number;
-};
-
-export type UserInfo = {
+export type User = {
+    id: string;
+    name?: string;
+    login: string;
+    createdAt: string;
+    email?: string;
+    url?: string;
     avatarUrl?: string;
     bio?: string;
     company?: string;
-    createdAt: Date;
-    name?: string;
-    starredRepositories: StarredRepositories;
+    isGitHubStar: boolean;
+    followers: number;
+    following: number;
+    repositories: number;
+    starredRepositories: number;
 };
 
 export type UserSearchResult = {
-    pageInfo: PageInfo;
+    hasNextPage: boolean;
+    hasPreviousPage: boolean;
+    startCursor?: string;
     userCount: number;
-    nodes: UserInfo[];
+    users: User[];
 };
