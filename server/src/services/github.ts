@@ -22,11 +22,12 @@ type UserNode = {
     avatarUrl?: string;
     bio?: string;
     company?: string;
+    location?: string;
     isGitHubStar: boolean;
-    followers: CountableEntity;
-    following: CountableEntity;
-    repositories: CountableEntity;
-    starredRepositories: CountableEntity;
+    followers?: CountableEntity;
+    following?: CountableEntity;
+    repositories?: CountableEntity;
+    starredRepositories?: CountableEntity;
 };
 
 type SearchResult = {
@@ -55,6 +56,7 @@ export const SEARCH_USERS_GQL = gql`
                     createdAt
                     name
                     email
+                    location
                     isGitHubStar
                     followers {
                       totalCount
@@ -74,6 +76,9 @@ export const SEARCH_USERS_GQL = gql`
     }
 `;
 
+const getCountableTotalValue = (countable?: CountableEntity) => {
+    return countable && countable.totalCount || 0;
+}
 
 export const searchUsers = async (client: ApolloClient<NormalizedCacheObject>, query: String): Promise<UserSearchResult> => {
     const queryResult = await client.query<{ search: SearchResult }>({
@@ -89,22 +94,17 @@ export const searchUsers = async (client: ApolloClient<NormalizedCacheObject>, q
     return {
         ...data.pageInfo,
         userCount: data.userCount,
-        users: data.nodes.map((userInfo) => {
+        users: data.nodes
+            .filter(user => !!user.id)
+            .map((userInfo) => {
             const {
-                id, login, url, avatarUrl, bio, company, createdAt, name, email, isGitHubStar,
-                followers: {
-                    totalCount: followers,
-                },
-                following: {
-                    totalCount: following,
-                },
-                repositories: {
-                    totalCount: repositories,
-                },
-                starredRepositories: {
-                    totalCount: starredRepositories,
-                },
+                id, login, url, avatarUrl, bio, company, createdAt, name, email, isGitHubStar, location,
+                followers,
+                following,
+                repositories,
+                starredRepositories,
             } = userInfo;
+
             return {
                 id,
                 login,
@@ -115,11 +115,12 @@ export const searchUsers = async (client: ApolloClient<NormalizedCacheObject>, q
                 createdAt,
                 name,
                 email,
+                location,
                 isGitHubStar,
-                followers,
-                following,
-                repositories,
-                starredRepositories,
+                followers: getCountableTotalValue(followers),
+                following: getCountableTotalValue(following),
+                repositories: getCountableTotalValue(repositories),
+                starredRepositories: getCountableTotalValue(starredRepositories),
             };
         }),
     }

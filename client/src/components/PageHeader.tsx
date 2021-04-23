@@ -1,12 +1,15 @@
 import React, { FunctionComponent } from 'react';
 import SearchIcon from '@material-ui/icons/Search';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     container: {
         display: 'flex',
         alignItems: 'center',
+        justifyContent: 'center',
+    },
+    header: {
+        fontSize: '2rem',
     },
     icon: {
         marginTop: theme.spacing(1),
@@ -22,9 +25,7 @@ const PageHeader: FunctionComponent<unknown> = () => {
             <div>
                 <SearchIcon className={styles.icon} color="primary" />
             </div>
-            <Typography component="h1" variant="h3">
-                GitHub User Search
-            </Typography>
+            <div className={styles.header}>GitHub User Search</div>
         </div>
     );
 };

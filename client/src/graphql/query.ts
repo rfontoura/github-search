@@ -1,12 +1,13 @@
 import { gql } from '@apollo/client/core';
 
-type User = {
+export type User = {
     id: string;
     name?: string;
     login: string;
     createdAt: string;
     email?: string;
     url?: string;
+    location?: string;
     avatarUrl?: string;
     bio?: string;
     company?: string;

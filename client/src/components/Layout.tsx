@@ -12,10 +12,18 @@ import UsersList from './UsersList';
 const Layout: FunctionComponent<unknown> = () => {
     const useStyles = makeStyles((theme) => ({
         container: {
-            marginTop: theme.spacing(8),
+            marginTop: theme.spacing(1),
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
+            justifyContent: 'center',
+        },
+        listContainer: {
+            marginTop: theme.spacing(2),
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            maxWidth: '1680px',
         },
         searchRow: {
             display: 'flex',
@@ -57,38 +65,42 @@ const Layout: FunctionComponent<unknown> = () => {
     );
 
     return (
-        <Container component="main" maxWidth="sm">
-            <div className={classes.container}>
-                <PageHeader />
-                <div className={classes.searchRow}>
-                    <TextField
-                        type="search"
-                        variant="outlined"
-                        id="query"
-                        label="Search users at GitHub"
-                        helperText="e.g.: stars: > 30"
-                        name="query"
-                        size="medium"
-                        autoFocus
-                        fullWidth
-                        className={classes.searchField}
-                        onKeyDown={onPressEnter}
-                        onChange={(e) => setQuery(e.target.value)}
-                    />
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                        onClick={runSearch}
-                    >
-                        Search
-                    </Button>
+        <div className={classes.container}>
+            <Container component="main" maxWidth="sm">
+                <div>
+                    <PageHeader />
+                    <div className={classes.searchRow}>
+                        <TextField
+                            type="search"
+                            variant="outlined"
+                            id="query"
+                            label="Search users at GitHub"
+                            helperText="e.g.: stars: > 30"
+                            name="query"
+                            size="medium"
+                            autoFocus
+                            fullWidth
+                            className={classes.searchField}
+                            onKeyDown={onPressEnter}
+                            onChange={(e) => setQuery(e.target.value)}
+                        />
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                            onClick={runSearch}
+                        >
+                            Search
+                        </Button>
+                    </div>
+                    {error && <div>ERROR: `${error}`</div>}
                 </div>
-                {error && <div>ERROR: `${error}`</div>}
+            </Container>
+            <Container maxWidth="xl" className={classes.listContainer}>
                 {!error && <UsersList searchResult={data?.searchUsers} isLoading={loading} />}
-            </div>
-        </Container>
+            </Container>
+        </div>
     );
 };
 
