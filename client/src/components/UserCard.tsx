@@ -41,7 +41,7 @@ const GitHubStar = ({ user }: { user: User }) => {
     if (!user.isGitHubStar) {
         return null;
     }
-    return <StarRateRoundedIcon style={{ paddingRight: '0.2em' }} color="primary" fontSize="small" />;
+    return <StarRateRoundedIcon style={{ fontSize: 30 }} color="primary" />;
 };
 
 const useStyles = makeStyles((theme) => {
@@ -114,9 +114,15 @@ const UserCard: FunctionComponent<UserCardType> = ({ user }: UserCardType) => {
             </div>
             <div className={styles.flexCenter}>
                 {user.name && (
-                    <div>
-                        <div>
-                            <GitHubStar user={user} />
+                    <div className={styles.flexCenter}>
+                        <div
+                            title="This person is a GitHub star!"
+                            style={{ lineHeight: '0.5rem' }}
+                            className={styles.flexCenter}
+                        >
+                            <a rel="noreferrer" href="https://stars.github.com/profiles/" target="_blank">
+                                <GitHubStar user={user} />
+                            </a>
                         </div>
                         <div className={styles.name}>{user.name}</div>
                     </div>
