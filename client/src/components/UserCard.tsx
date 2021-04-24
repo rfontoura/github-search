@@ -54,7 +54,7 @@ const GitHubStar = ({ user }: { user: User }) => {
 };
 
 const useStyles = makeStyles((theme) => {
-    const cardWidth = theme.spacing(32);
+    const cardWidth = theme.spacing(30);
     return {
         icon: {
             root: {
@@ -76,7 +76,7 @@ const useStyles = makeStyles((theme) => {
             padding: `${theme.spacing(1)}px ${theme.spacing(2)}px ${theme.spacing(2)}px`,
             display: 'flex',
             flexDirection: 'column',
-            fontSize: '0.85rem',
+            fontSize: '0.8rem',
             '&> div': {
                 marginTop: theme.spacing(0.75),
             },

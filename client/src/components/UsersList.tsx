@@ -8,6 +8,7 @@ import Pagination from './Pagination';
 const useStyles = makeStyles((theme) => ({
     usersList: {
         display: 'flex',
+        justifyContent: 'center',
         marginTop: theme.spacing(2),
         flexWrap: 'wrap',
         width: '100%',
