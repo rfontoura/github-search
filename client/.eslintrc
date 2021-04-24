@@ -10,7 +10,7 @@
     }
   },
   "extends": [
-    "airbnb-typescript",
+    "airbnb-typescript/base",
     "airbnb/hooks",
     "plugin:@typescript-eslint/recommended",
     "plugin:react/recommended",
