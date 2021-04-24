@@ -16,14 +16,14 @@ const useStyles = makeStyles((theme) => ({
             fontSize: '0.81rem',
             borderSpacing: 0,
         },
-        '& > table > tr': {
+        '& > table > tbody > tr': {
             lineHeight: '1.2rem',
         },
-        '& > table > tr > td:first-child': {
+        '& > table > tbody > tr > td:first-child': {
             color: '#888888',
             width: theme.spacing(28),
         },
-        '& > table > tr > td:nth-child(2)': {
+        '& > table > tbody > tr > td:nth-child(2)': {
             width: theme.spacing(44),
         },
     },
@@ -65,22 +65,24 @@ const SearchTips: FunctionComponent<SearchTipsType> = ({ initiallyFolded = false
             </div>
             <div className={styles.tipsContainer}>
                 <table>
-                    <tr>
-                        <td>fullname:&quot;Linus Torvalds&quot;</td>
-                        <td>Find users with the full name &quot;Linus Torvalds&quot;.</td>
-                    </tr>
-                    <tr>
-                        <td>tom location:&quot;San Francisco, CA&quot;</td>
-                        <td>Find all tom users in &quot;San Francisco, CA&quot;.</td>
-                    </tr>
-                    <tr>
-                        <td>chris followers:100..200</td>
-                        <td>Find all chris users with followers between 100 and 200.</td>
-                    </tr>
-                    <tr>
-                        <td>{`ryan repos:>10`}</td>
-                        <td>Find all ryan users with more than 10 repositories.</td>
-                    </tr>
+                    <tbody>
+                        <tr>
+                            <td>fullname:&quot;Linus Torvalds&quot;</td>
+                            <td>Find users with the full name &quot;Linus Torvalds&quot;.</td>
+                        </tr>
+                        <tr>
+                            <td>tom location:&quot;San Francisco, CA&quot;</td>
+                            <td>Find all tom users in &quot;San Francisco, CA&quot;.</td>
+                        </tr>
+                        <tr>
+                            <td>chris followers:100..200</td>
+                            <td>Find all chris users with followers between 100 and 200.</td>
+                        </tr>
+                        <tr>
+                            <td>{`ryan repos:>10`}</td>
+                            <td>Find all ryan users with more than 10 repositories.</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
