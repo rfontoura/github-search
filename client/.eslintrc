@@ -56,7 +56,6 @@
     "curly": [
       "error",
       "all"
-    ],
-    "jsx-a11y/anchor-is-valid": 1
+    ]
   }
 }
