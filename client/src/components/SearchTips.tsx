@@ -5,7 +5,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({
     container: {
-        margin: `${theme.spacing(1)}px 0 ${theme.spacing(3)}px`,
+        margin: `${theme.spacing(1)}px 0 ${theme.spacing(2)}px`,
         display: 'flex',
         flexDirection: 'column',
         width: theme.spacing(69),
