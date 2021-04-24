@@ -3,6 +3,7 @@ import StarRateRoundedIcon from '@material-ui/icons/StarRateRounded';
 import BusinessIcon from '@material-ui/icons/Business';
 import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined';
 import LocationOnOutlinedIcon from '@material-ui/icons/LocationOnOutlined';
+import FolderOpenIcon from '@material-ui/icons/FolderOpen';
 import { makeStyles } from '@material-ui/core/styles';
 import { Avatar, Paper } from '@material-ui/core';
 import { User } from '../graphql/query';
@@ -23,7 +24,14 @@ const AvatarOrInitials = ({ user, avatarStyle }: AvatarOrInitialsType) => {
         const pictureName = `${user.name || user.login} picture`;
         return (
             <div className={avatarStyle}>
-                <img src={user.avatarUrl} className={avatarStyle} alt={pictureName} />
+                <a
+                    href={user.url}
+                    rel="noreferrer"
+                    target="_blank"
+                    title={`Go to ${user.name || user.login} page at GitHub`}
+                >
+                    <img src={user.avatarUrl} className={avatarStyle} alt={pictureName} />
+                </a>
             </div>
         );
     }
@@ -70,7 +78,7 @@ const useStyles = makeStyles((theme) => {
             flexDirection: 'column',
             fontSize: '0.85rem',
             '&> div': {
-                marginTop: theme.spacing(0.5),
+                marginTop: theme.spacing(0.75),
             },
         },
         avatar: {
@@ -142,7 +150,7 @@ const UserCard: FunctionComponent<UserCardType> = ({ user }: UserCardType) => {
                         </div>
                     )}
                 </div>
-                <div className={styles.login}>{user.login}aa</div>
+                <div className={styles.login}>{user.login}</div>
                 {user.bio && <div className={styles.bio}>{user.bio}</div>}
                 {user.company && (
                     <div className={styles.flexCenter}>
@@ -154,8 +162,8 @@ const UserCard: FunctionComponent<UserCardType> = ({ user }: UserCardType) => {
                 )}
                 {user.location && (
                     <div className={styles.flexCenter}>
-                        <div className={styles.icon}>
-                            <LocationOnOutlinedIcon color="primary" />
+                        <div>
+                            <LocationOnOutlinedIcon className={styles.icon} />
                         </div>
                         <div>{user.location}</div>
                     </div>
@@ -167,11 +175,14 @@ const UserCard: FunctionComponent<UserCardType> = ({ user }: UserCardType) => {
                     {user.followers} followers · {user.following} following
                 </div>
                 <div className={styles.flexCenter}>
-                    Repositories: {user.repositories} ·{' '}
+                    <FolderOpenIcon className={styles.icon} />
+                    {user.repositories} {' repos ·'}
                     <div>
                         <StarRateRoundedIcon className={styles.icon} />
                     </div>
-                    <span title={`${user.starredRepositories} starred repositories`}>{user.starredRepositories}</span>
+                    <span title={`${user.starredRepositories} starred repositories`}>
+                        {user.starredRepositories} starred
+                    </span>
                 </div>
             </div>
         </Paper>

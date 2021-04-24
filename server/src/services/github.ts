@@ -105,8 +105,6 @@ export const searchUsers = async (client: ApolloClient<NormalizedCacheObject>, p
         }
     }
 
-    console.log('variables')
-
     const queryResult = await client.query<{ search: SearchResult }>(options);
 
     const data = queryResult.data.search;

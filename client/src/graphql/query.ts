@@ -55,6 +55,7 @@ export const SEARCH_USERS = gql`
                 avatarUrl
                 bio
                 company
+                location
                 isGitHubStar
                 followers
                 following

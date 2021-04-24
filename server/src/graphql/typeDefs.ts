@@ -13,6 +13,7 @@ export default gql`
         avatarUrl: String
         bio: String
         company: String
+        location: String
         isGitHubStar: Boolean
         followers: Int!
         following: Int!
