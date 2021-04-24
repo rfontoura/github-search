@@ -6,17 +6,9 @@ import Layout from './components/Layout';
 import 'fontsource-roboto';
 
 const App: FunctionComponent<unknown> = () => {
-    let endpoint;
-    if (typeof window === 'undefined') {
-        endpoint = 'http://api';
-    } else {
-        const { host: originalHost, protocol } = window.location;
-        const host = originalHost.indexOf(':') > -1 ? originalHost.split(':')[0] : originalHost;
-        endpoint = `${protocol}//${host.split(':')[0]}:4000`;
-    }
-
+    const endpoint = process.env.GRAPHQL_ENDPOINT || 'http://localhost:4000/graphql';
     const client = new ApolloClient({
-        uri: `${endpoint}/graphql`,
+        uri: `${endpoint}`,
         cache: new InMemoryCache(),
     });
 
