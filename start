@@ -1,2 +1,4 @@
-cd server
+cd client && yarn
+cd ../server
+yarn
 yarn dev
