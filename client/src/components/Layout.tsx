@@ -122,7 +122,7 @@ const Layout: FunctionComponent<unknown> = () => {
                         onKeyDown={onPressEnter}
                         onChange={(e) => setQuery(e.target.value)}
                     />
-                    <SearchTips initiallyFolded={!!data} />
+                    <SearchTips initiallyFolded={data?.searchUsers && data.searchUsers.userCount > 0} />
                     <Button
                         type="submit"
                         variant="contained"

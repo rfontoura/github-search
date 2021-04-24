@@ -102,6 +102,7 @@ const useStyles = makeStyles((theme) => {
         bio: {
             marginTop: theme.spacing(0.5),
             textOverflow: 'ellipsis',
+            fontSize: '0.8rem',
         },
         login: {
             marginTop: '0.2rem',
@@ -169,7 +170,7 @@ const UserCard: FunctionComponent<UserCardType> = ({ user }: UserCardType) => {
                     </div>
                 )}
                 <div className={styles.followersLine}>
-                    <div className={styles.icon}>
+                    <div>
                         <PeopleAltOutlinedIcon className={styles.icon} />
                     </div>
                     {user.followers} followers · {user.following} following
