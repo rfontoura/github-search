@@ -9,6 +9,7 @@ import { CircularProgress } from '@material-ui/core';
 import { SEARCH_USERS, SearchUsersParametersType, SearchUsersResultType } from '../graphql/query';
 import PageHeader from './PageHeader';
 import UsersList from './UsersList';
+import SearchTips from './SearchTips';
 
 const Layout: FunctionComponent<unknown> = () => {
     const useStyles = makeStyles((theme) => ({
@@ -48,6 +49,7 @@ const Layout: FunctionComponent<unknown> = () => {
             justifyContent: 'center',
         },
     }));
+
     const classes = useStyles();
 
     const [query, setQuery] = useState('');
@@ -95,9 +97,16 @@ const Layout: FunctionComponent<unknown> = () => {
         [runSearch],
     );
 
+    const containerStyle = {} as Record<string, unknown> | { style: { height: string } };
+    if (!data && !loading && !error) {
+        containerStyle.style = {
+            height: '100vh',
+        };
+    }
+
     return (
         <div className={classes.container}>
-            <Container component="main" maxWidth="sm" className={classes.container}>
+            <Container component="main" maxWidth="sm" className={classes.container} {...containerStyle}>
                 <PageHeader />
                 <div className={classes.searchRow}>
                     <TextField
@@ -105,7 +114,6 @@ const Layout: FunctionComponent<unknown> = () => {
                         variant="outlined"
                         id="query"
                         label="Search users at GitHub"
-                        helperText="e.g.: stars: > 30"
                         name="query"
                         size="medium"
                         autoFocus
@@ -114,6 +122,7 @@ const Layout: FunctionComponent<unknown> = () => {
                         onKeyDown={onPressEnter}
                         onChange={(e) => setQuery(e.target.value)}
                     />
+                    <SearchTips initiallyFolded={!!data} />
                     <Button
                         type="submit"
                         variant="contained"
@@ -131,15 +140,15 @@ const Layout: FunctionComponent<unknown> = () => {
                 )}
                 {error && <div>ERROR: `${error}`</div>}
             </Container>
-            <Container maxWidth="xl" className={classes.listContainer}>
-                {!error && !!data && (
+            {!error && !!data && (
+                <Container maxWidth="xl" className={classes.listContainer}>
                     <UsersList
                         searchResult={data.searchUsers}
                         onClickNext={onClickNext}
                         onClickPrevious={onClickPrevious}
                     />
-                )}
-            </Container>
+                </Container>
+            )}
         </div>
     );
 };
