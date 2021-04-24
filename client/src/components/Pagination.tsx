@@ -7,9 +7,10 @@ import { makeStyles } from '@material-ui/core/styles';
 type PaginationType = {
     hasNextPage: boolean;
     hasPreviousPage: boolean;
-    total: number;
+    total?: number;
     onClickNext: () => void;
     onClickPrevious: () => void;
+    showTotal?: boolean;
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -31,15 +32,16 @@ const useStyles = makeStyles((theme) => ({
 const Pagination: FunctionComponent<PaginationType> = ({
     hasNextPage,
     hasPreviousPage,
-    total,
+    total = 0,
     onClickNext,
     onClickPrevious,
+    showTotal = true,
 }: PaginationType) => {
     const styles = useStyles();
     const formatter = useMemo(() => new Intl.NumberFormat(), []);
     return (
         <div className={styles.container}>
-            <div>{`${formatter.format(total)} ${total === 1 ? 'user' : 'users'} found`}</div>
+            {showTotal && <div>{`${formatter.format(total)} ${total === 1 ? 'user' : 'users'} found`}</div>}
             <div className={styles.buttonContainer}>
                 <Button disabled={!hasPreviousPage} onClick={onClickPrevious} title="Previous page">
                     <NavigateBeforeIcon />
@@ -52,6 +54,11 @@ const Pagination: FunctionComponent<PaginationType> = ({
             </div>
         </div>
     );
+};
+
+Pagination.defaultProps = {
+    total: 0,
+    showTotal: true,
 };
 
 export default Pagination;

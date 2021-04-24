@@ -81,7 +81,7 @@ const getCountableTotalValue = (countable?: CountableEntity) => {
     return countable && countable.totalCount || 0;
 };
 
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 48;
 
 export const searchUsers = async (client: ApolloClient<NormalizedCacheObject>, params: SearchQueryParams): Promise<UserSearchResult> => {
     const { query, direction, cursor } = params;

@@ -16,6 +16,7 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+        marginBottom: theme.spacing(4),
     },
 }));
 
@@ -51,6 +52,13 @@ const UsersList: FunctionComponent<UsersListType> = ({ searchResult, onClickNext
                     <UserCard key={user.id} user={user} />
                 ))}
             </div>
+            <Pagination
+                hasNextPage={hasNextPage}
+                hasPreviousPage={hasPreviousPage}
+                onClickNext={onClickNext}
+                onClickPrevious={onClickPrevious}
+                showTotal={false}
+            />
         </Container>
     );
 };
