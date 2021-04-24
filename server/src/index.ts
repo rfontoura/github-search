@@ -1,5 +1,5 @@
 import { ApolloServer } from 'apollo-server';
-import { UserSearchResult } from './types';
+import { SearchQueryParams, UserSearchResult } from './types';
 import { createGitHubApolloClient } from './gitHubClient';
 import { searchUsers } from './services/github';
 import typeDefs from './graphql/typeDefs';
@@ -12,8 +12,8 @@ const apolloClient = createGitHubApolloClient();
 const resolvers = {
     Date: dateScalar,
     Query: {
-        async searchUsers(parent: any, { query }: { query: string }): Promise<UserSearchResult> {
-            return searchUsers(apolloClient, query);
+        async searchUsers(parent: any, params: SearchQueryParams): Promise<UserSearchResult> {
+            return searchUsers(apolloClient, params);
         },
     },
 };

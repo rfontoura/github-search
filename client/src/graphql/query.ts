@@ -22,17 +22,28 @@ export type UserSearchResult = {
     hasNextPage: boolean;
     hasPreviousPage: boolean;
     startCursor?: string;
+    endCursor?: string;
     userCount: number;
     users: User[];
 };
 
-export type SearchType = { search: UserSearchResult };
+export type SearchUsersResultType = { searchUsers: UserSearchResult };
+
+type SearchUserDirectionType = 'FORWARD' | 'BACKWARD';
+
+export type SearchUsersParametersType = {
+    query: string;
+    direction?: SearchUserDirectionType;
+    cursor?: string;
+};
+
 export const SEARCH_USERS = gql`
-    query search($query: String!) {
-        searchUsers(query: $query) {
+    query search($query: String!, $direction: String, $cursor: String) {
+        searchUsers(query: $query, direction: $direction, cursor: $cursor) {
             hasNextPage
             hasPreviousPage
             startCursor
+            endCursor
             userCount
             users {
                 id

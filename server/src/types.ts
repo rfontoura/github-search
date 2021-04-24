@@ -20,6 +20,15 @@ export type UserSearchResult = {
     hasNextPage: boolean;
     hasPreviousPage: boolean;
     startCursor?: string;
+    endCursor?: string;
     userCount: number;
     users: User[];
+};
+
+type SearchDirection = 'FORWARD' | 'BACKWARD';
+
+export type SearchQueryParams = {
+    query: string;
+    cursor?: string;
+    direction?: SearchDirection;
 };

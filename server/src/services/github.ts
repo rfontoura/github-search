@@ -1,6 +1,6 @@
 import { ApolloClient, NormalizedCacheObject } from '@apollo/client';
 import gql from 'graphql-tag';
-import { UserSearchResult } from '../types';
+import { SearchQueryParams, UserSearchResult } from '../types';
 
 type PageInfo = {
     hasNextPage: boolean;
@@ -37,9 +37,10 @@ type SearchResult = {
 };
 
 export const SEARCH_USERS_GQL = gql`
-    query search($query: String!) {
-        search(query: $query, type: USER, first: 50) {
+    query search($query: String!, $after: String, $before: String, $first: Int, $last: Int) {
+        search(query: $query, type: USER, after: $after, before: $before, first: $first, last: $last) {
             pageInfo {
+                endCursor
                 hasNextPage
                 hasPreviousPage
                 startCursor
@@ -78,17 +79,35 @@ export const SEARCH_USERS_GQL = gql`
 
 const getCountableTotalValue = (countable?: CountableEntity) => {
     return countable && countable.totalCount || 0;
-}
+};
 
-export const searchUsers = async (client: ApolloClient<NormalizedCacheObject>, query: String): Promise<UserSearchResult> => {
-    const queryResult = await client.query<{ search: SearchResult }>({
+const PAGE_SIZE = 20;
+
+export const searchUsers = async (client: ApolloClient<NormalizedCacheObject>, params: SearchQueryParams): Promise<UserSearchResult> => {
+    const { query, direction, cursor } = params;
+    const options = {
         query: SEARCH_USERS_GQL,
         variables: {
             query,
             type: 'USER',
-            first: 20,
+            after: undefined as undefined | string,
+            before: undefined as undefined | string,
+            first: (!direction || direction === 'FORWARD') && PAGE_SIZE || undefined,
+            last: direction === 'BACKWARD' && PAGE_SIZE || undefined,
         },
-    });
+    };
+
+    if (direction && cursor) {
+        if (direction === 'FORWARD') {
+            options.variables.after = cursor;
+        } else {
+            options.variables.before = cursor;
+        }
+    }
+
+    console.log('variables')
+
+    const queryResult = await client.query<{ search: SearchResult }>(options);
 
     const data = queryResult.data.search;
     return {
@@ -98,7 +117,17 @@ export const searchUsers = async (client: ApolloClient<NormalizedCacheObject>, q
             .filter(user => !!user.id)
             .map((userInfo) => {
             const {
-                id, login, url, avatarUrl, bio, company, createdAt, name, email, isGitHubStar, location,
+                id,
+                login,
+                url,
+                avatarUrl,
+                bio,
+                company,
+                createdAt,
+                name,
+                email,
+                isGitHubStar,
+                location,
                 followers,
                 following,
                 repositories,

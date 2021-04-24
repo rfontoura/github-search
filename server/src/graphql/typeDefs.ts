@@ -2,7 +2,7 @@ import { gql } from 'apollo-server';
 
 export default gql`
     scalar Date
-
+    
     type User {
         id: String!
         name: String
@@ -24,11 +24,12 @@ export default gql`
         hasNextPage: Boolean!
         hasPreviousPage: Boolean!
         startCursor: String
+        endCursor: String
         userCount: Int!
         users: [User]!
     }
     
     type Query {
-        searchUsers(query: String!): UserSearchResult!
+        searchUsers(query: String!, direction: String, cursor: String): UserSearchResult!
     }
 `;
