@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { FunctionComponent, useCallback, useState } from 'react';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpandLessIcon from '@material-ui/icons/ExpandLess';
 import { makeStyles } from '@material-ui/core/styles';
@@ -42,7 +42,7 @@ type SearchTipsType = {
     initiallyFolded?: boolean;
 };
 
-const SearchTips = ({ initiallyFolded = false }: SearchTipsType) => {
+const SearchTips: FunctionComponent<SearchTipsType> = ({ initiallyFolded = false }: SearchTipsType) => {
     const [folded, setFolded] = useState(initiallyFolded);
     const openTips = useCallback(() => setFolded(false), []);
     const closeTips = useCallback(() => setFolded(true), []);
