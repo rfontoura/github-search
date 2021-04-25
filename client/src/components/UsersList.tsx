@@ -27,8 +27,8 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '1.4rem',
     },
     image: {
-        width: '400px',
-        height: '400px',
+        width: '350px',
+        height: '350px',
     },
 }));
 
