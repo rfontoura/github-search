@@ -21,16 +21,9 @@ const PageHeader: FunctionComponent<unknown> = () => {
     const styles = useStyles();
     return (
         <div className={styles.container}>
-            <div className={styles.image}>
-                <a
-                    href="https://www.freepik.com/vectors/pattern"
-                    target="_blank"
-                    rel="noreferrer"
-                    title="Pattern vector created by macrovector - www.freepik.com"
-                >
-                    {/* GitHub doesn't allow to use its octopus [https://github.com/logos] :( so I had to pick another one */}
-                    <Octopus />
-                </a>
+            <div className={styles.image} title="Pattern vector created by macrovector - www.freepik.com">
+                {/* GitHub doesn't allow to use its octopus [https://github.com/logos] :( so I had to pick another one */}
+                <Octopus />
             </div>
             <div className={styles.header}>GitHub User Search</div>
         </div>

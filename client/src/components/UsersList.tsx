@@ -4,6 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { UserSearchResult } from '../graphql/query';
 import UserCard from './UserCard';
 import Pagination from './Pagination';
+import telescopeImage from '../images/telescope.png';
 
 const useStyles = makeStyles((theme) => ({
     usersList: {
@@ -18,6 +19,16 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         alignItems: 'center',
         marginBottom: theme.spacing(4),
+    },
+    imageContainer: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        fontSize: '1.4rem',
+    },
+    image: {
+        width: '400px',
+        height: '400px',
     },
 }));
 
@@ -36,7 +47,24 @@ const UsersList: FunctionComponent<UsersListType> = ({ searchResult, onClickNext
     }
 
     if (!searchResult.userCount) {
-        return <div>Users not found</div>;
+        return (
+            <div className={styles.imageContainer}>
+                <img
+                    src={telescopeImage}
+                    className={styles.image}
+                    title="Technology vector created by catalyststuff - www.freepik.com"
+                />
+                <div style={{ textAlign: 'center' }}>
+                    User not found matching your criteria.
+                    <br />
+                    Have you tried searching for{' '}
+                    <a href="https://stars.github.com/" rel="noreferrer" target="_blank">
+                        GitHub stars
+                    </a>
+                    ?
+                </div>
+            </div>
+        );
     }
 
     return (
